@@ -3,44 +3,39 @@ const juice = require('juice');
 const hljs = require('highlight.js');
 
 // ============================================================================
-// 1. 定义皮肤样式库 (CSS) - 已优化美感
+// 1. 定义皮肤样式库 (CSS) - V7.3 修复列表颜色和间距
 // ============================================================================
 const THEMES = {
   // 默认：微信技术风 (优化版 - 适配深色/浅色背景)
   'wechat-tech': `
-    /* 全局字体优化，增加呼吸感 */
+    /* 全局字体优化 */
     body { 
       font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; 
       line-height: 1.8; 
       font-size: 16px; 
-      color: #333; /* 默认深灰，WP深色主题通常会自动反转这个，或者你可以改为 #e0e0e0 强制浅色 */
+      /* 确保全局默认文字是浅色，适配深色背景 */
+      color: #f0f0f0; 
     }
 
-    /* H1 主标题 - 沉稳大气 */
+    /* H1 主标题 */
     h1 { 
       font-size: 24px; 
       font-weight: 800; 
       margin: 35px 0 25px; 
-      color: #333; 
-      border-bottom: 2px solid #eaeaea; 
+      color: #f0f0f0; /* 改为浅色 */
+      border-bottom: 2px solid #444; /* 深色背景下的分割线 */
       padding-bottom: 15px; 
     }
 
-    /* H2 板块标题 (您要求的红框部分) - 极光蓝配色 */
+    /* H2 板块标题 (红框部分) - 极光蓝配色 */
     h2 { 
       font-size: 20px; 
       font-weight: bold; 
       margin: 40px 0 20px; 
       padding-left: 15px; 
-      
-      /* 核心修改：改为高亮科技蓝，在深色背景下非常漂亮 */
       color: #1e80ff; 
-      
-      /* 核心修改：左侧竖杠，加粗，同色 */
       border-left: 5px solid #1e80ff; 
-      
-      /* 增加一点微弱的背景色，让标题条更像一个Banner (可选，增加层次感) */
-      background: linear-gradient(to right, rgba(30, 128, 255, 0.05), transparent);
+      background: linear-gradient(to right, rgba(30, 128, 255, 0.1), transparent);
       line-height: 1.4;
       border-radius: 0 4px 4px 0;
     }
@@ -50,30 +45,40 @@ const THEMES = {
       font-size: 18px; 
       font-weight: bold; 
       margin: 25px 0 15px; 
-      color: #1e80ff; /* 与 H2 呼应 */
+      color: #1e80ff; 
     }
 
-    /* 正文段落 - 两端对齐，阅读舒适 */
+    /* 正文段落 */
     p { 
       margin-bottom: 18px; 
       text-align: justify; 
       letter-spacing: 0.5px; 
-      opacity: 0.9; /* 稍微柔和一点 */
+      opacity: 0.95; 
     }
 
-    /* 列表 - 增加缩进 */
+    /* =========== 核心修复区域 Start =========== */
+    /* 列表修复：颜色改为白色，并解决大间距问题 */
     ul, ol { 
       padding-left: 22px; 
-      margin-bottom: 22px; 
-      color: #555; 
+      /* 【修复2】将列表底部的默认间距从 22px 减小到 10px */
+      margin-bottom: 10px; 
+      /* 【修复1】将字体颜色从深灰 #555 改为米白 #f0f0f0，解决看不清的问题 */
+      color: #f0f0f0; 
     }
+    /* 列表项内部的间距保持不变 */
     li { margin-bottom: 8px; }
 
-    /* 重点文字 - 财经红 (用于跌幅/上涨数据) */
+    /* 【修复2加强版】如果 AI 生成了多个连续的独立列表，强制抵消它们之间的间距 */
+    ul + ul, ol + ol, ul + ol, ol + ul {
+        margin-top: -10px;
+    }
+    /* =========== 核心修复区域 End =========== */
+
+    /* 重点文字 - 财经红 */
     strong { 
-      color: #ff4d4f; /* 鲜艳的红色，强调数据 */
+      color: #ff4d4f; 
       font-weight: bold; 
-      margin: 0 2px; /* 增加一点左右间距，防粘连 */
+      margin: 0 2px; 
     }
 
     /* 链接样式 */
@@ -83,25 +88,26 @@ const THEMES = {
       border-bottom: 1px dashed rgba(30, 128, 255, 0.5); 
     }
 
-    /* 引用块 - 灰色背景 */
+    /* 引用块 */
     blockquote { 
-      border-left: 4px solid #ddd; 
-      background: rgba(0,0,0,0.03); 
+      border-left: 4px solid #555; 
+      background: rgba(255,255,255,0.05); /* 深色背景下的半透明白 */
       padding: 15px 20px; 
-      color: #666; 
+      color: #ccc; /* 引用文字颜色变浅 */
       margin: 25px 0; 
       border-radius: 4px;
     }
 
     /* 代码块高亮 */
     pre.hljs { 
-      background: #282c34; 
+      background: #1e1e1e; /* 更深的代码背景 */
       color: #abb2bf; 
       padding: 18px; 
       border-radius: 8px; 
       overflow-x: auto; 
       font-family: 'Menlo', monospace; 
       margin: 25px 0; 
+      border: 1px solid #333;
     }
   `
 };
