@@ -1,0 +1,9 @@
+{
+  "name": "my-formatter-api",
+  "version": "1.0.0",
+  "dependencies": {
+    "markdown-it": "^13.0.1",
+    "juice": "^9.1.0",
+    "highlight.js": "^11.7.0"
+  }
+}
