@@ -3,45 +3,116 @@ const juice = require('juice');
 const hljs = require('highlight.js');
 
 // ============================================================================
-// 1. 定义皮肤样式库 (CSS)
+// 1. 定义皮肤样式库 (CSS) - 已优化美感
 // ============================================================================
 const THEMES = {
-  // 默认：微信技术风 (黑色/代码块深色/红色强调)
+  // 默认：微信技术风 (优化版 - 适配深色/浅色背景)
   'wechat-tech': `
-    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.75; color: #333; font-size: 16px; }
-    h1 { font-size: 24px; font-weight: bold; margin: 30px 0 20px; color: #000; border-bottom: 2px solid #333; padding-bottom: 10px; }
-    h2 { font-size: 20px; font-weight: bold; margin: 30px 0 20px; color: #000; border-left: 4px solid #333; padding-left: 12px; }
-    h3 { font-size: 18px; font-weight: bold; margin: 25px 0 15px; color: #333; }
-    p { margin-bottom: 16px; text-align: justify; letter-spacing: 0.5px; }
-    ul, ol { padding-left: 20px; margin-bottom: 20px; color: #444; }
-    li { margin-bottom: 8px; }
-    strong { color: #d9534f; font-weight: bold; } /* 重点标红 */
-    a { color: #007aff; text-decoration: none; border-bottom: 1px dashed #007aff; }
-    blockquote { border-left: 4px solid #ddd; background: #f9f9f9; padding: 15px; color: #666; font-style: italic; margin: 20px 0; }
-    /* 代码块高亮样式 (仿 Mac 窗口) */
-    pre.hljs { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Menlo', 'Monaco', monospace; line-height: 1.5; font-size: 14px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    code { font-family: 'Menlo', 'Monaco', monospace; background: rgba(0,0,0,0.05); padding: 2px 5px; border-radius: 3px; color: #d9534f; font-size: 0.9em; }
-    pre code { background: none; padding: 0; color: inherit; }
-  `,
+    /* 全局字体优化，增加呼吸感 */
+    body { 
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; 
+      line-height: 1.8; 
+      font-size: 16px; 
+      color: #333; /* 默认深灰，WP深色主题通常会自动反转这个，或者你可以改为 #e0e0e0 强制浅色 */
+    }
 
-  // 选项：掘金蓝 (清爽/蓝色调)
-  'juejin-blue': `
-    body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.8; color: #2c3e50; font-size: 16px; }
-    h1, h2, h3 { color: #1e80ff; margin-top: 24px; margin-bottom: 16px; font-weight: 600; }
-    h2 { border-bottom: 1px solid #eaecef; padding-bottom: .3em; font-size: 1.5em; }
-    strong { color: #1e80ff; }
-    blockquote { border-left: 4px solid #1e80ff; background-color: rgba(30,128,255,0.05); padding: 10px 15px; color: #555; }
-    pre.hljs { background: #f5f7f9; color: #333; padding: 15px; border-radius: 4px; border: 1px solid #e1e4e8; font-family: monospace; }
+    /* H1 主标题 - 沉稳大气 */
+    h1 { 
+      font-size: 24px; 
+      font-weight: 800; 
+      margin: 35px 0 25px; 
+      color: #333; 
+      border-bottom: 2px solid #eaeaea; 
+      padding-bottom: 15px; 
+    }
+
+    /* H2 板块标题 (您要求的红框部分) - 极光蓝配色 */
+    h2 { 
+      font-size: 20px; 
+      font-weight: bold; 
+      margin: 40px 0 20px; 
+      padding-left: 15px; 
+      
+      /* 核心修改：改为高亮科技蓝，在深色背景下非常漂亮 */
+      color: #1e80ff; 
+      
+      /* 核心修改：左侧竖杠，加粗，同色 */
+      border-left: 5px solid #1e80ff; 
+      
+      /* 增加一点微弱的背景色，让标题条更像一个Banner (可选，增加层次感) */
+      background: linear-gradient(to right, rgba(30, 128, 255, 0.05), transparent);
+      line-height: 1.4;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* H3 小标题 */
+    h3 { 
+      font-size: 18px; 
+      font-weight: bold; 
+      margin: 25px 0 15px; 
+      color: #1e80ff; /* 与 H2 呼应 */
+    }
+
+    /* 正文段落 - 两端对齐，阅读舒适 */
+    p { 
+      margin-bottom: 18px; 
+      text-align: justify; 
+      letter-spacing: 0.5px; 
+      opacity: 0.9; /* 稍微柔和一点 */
+    }
+
+    /* 列表 - 增加缩进 */
+    ul, ol { 
+      padding-left: 22px; 
+      margin-bottom: 22px; 
+      color: #555; 
+    }
+    li { margin-bottom: 8px; }
+
+    /* 重点文字 - 财经红 (用于跌幅/上涨数据) */
+    strong { 
+      color: #ff4d4f; /* 鲜艳的红色，强调数据 */
+      font-weight: bold; 
+      margin: 0 2px; /* 增加一点左右间距，防粘连 */
+    }
+
+    /* 链接样式 */
+    a { 
+      color: #1e80ff; 
+      text-decoration: none; 
+      border-bottom: 1px dashed rgba(30, 128, 255, 0.5); 
+    }
+
+    /* 引用块 - 灰色背景 */
+    blockquote { 
+      border-left: 4px solid #ddd; 
+      background: rgba(0,0,0,0.03); 
+      padding: 15px 20px; 
+      color: #666; 
+      margin: 25px 0; 
+      border-radius: 4px;
+    }
+
+    /* 代码块高亮 */
+    pre.hljs { 
+      background: #282c34; 
+      color: #abb2bf; 
+      padding: 18px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-family: 'Menlo', monospace; 
+      margin: 25px 0; 
+    }
   `
 };
 
 // ============================================================================
-// 2. 初始化 Markdown 解析器
+// 2. 初始化 Markdown 解析器 (保持不变)
 // ============================================================================
 const md = new MarkdownIt({
-  html: true,       // 允许 HTML 标签
-  breaks: true,     // 换行符转 <br>
-  linkify: true,    // 自动识别链接
+  html: true,
+  breaks: true,
+  linkify: true,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -58,40 +129,31 @@ const md = new MarkdownIt({
 // 3. 核心处理逻辑 (Vercel Serverless Function)
 // ============================================================================
 module.exports = (req, res) => {
-  // 3.1 跨域配置 (允许 n8n 随时调用)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // 处理预检请求
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // 只允许 POST 请求
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed. Please use POST.' });
   }
 
   try {
-    // 3.2 获取参数 (容错处理)
     const body = req.body || {};
     const content = body.content || "";
     const themeKey = body.theme || 'wechat-tech';
 
-    // 如果内容为空，返回提示
     if (!content.trim()) {
       return res.status(400).json({ error: 'Content is empty' });
     }
 
-    // 3.3 渲染 Markdown -> HTML (素颜)
     const rawHtml = md.render(content);
-
-    // 3.4 获取 CSS 并注入 (上妆)
     const css = THEMES[themeKey] || THEMES['wechat-tech'];
     const finalHtml = juice.inlineContent(rawHtml, css);
 
-    // 3.5 返回纯文本 HTML (防止 JSON 转义问题)
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.status(200).send(finalHtml);
 
